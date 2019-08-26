@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>add Emp</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css"
+          href="/static/css/style.css"/>
+    <script src="/static/jquery-1.11.1.js/"></script>
+    <script>
+        {#    function checkName() {#}
+        {#    uname = $("#name").val();#}
+        {#    username = $("#name").val();#}
+        {#    document.getElementById('spanid').innerHTML = '<img src="/static/images/5-121204193R0-50.gif" id="imgid" width="20px">'#}
+        {#    var xhr;#}
+        {#    if (window.ActiveXObject) {#}
+        {#        xhr = new ActiveXObject()#}
+        {#    } else if (window.XMLHttpRequest) {#}
+        {#        xhr = new XMLHttpRequest()#}
+        {#    }#}
+        {#    url = "{% url 'Staffapp:checkname'%}?name=" + uname;#}
+        {#    xhr.open('get', url, true);#}
+        {#    xhr.send();#}
+        {#    //回调#}
+        {#    xhr.onreadystatechange = function () {#}
+        {#        if (xhr.readyState == 4) {#}
+        {#$('#spanid').html(xhr.responseText)#}
+        {#            document.getElementById('spanid').innerHTML = xhr.responseText#}
+        {#        }#}
+        {#    };#}
+        {##}
+        {##}
+        #}#}
+    </script>
+</head>
+
+<body>
+<div id="wrap">
+    <div id="top_content">
+        <div id="header">
+            <div id="rightheader">
+                <p>
+                    2019/07/16 <br/>
+                </p>
+            </div>
+            <div id="topheader">
+                <h1 id="title">
+                    <a href="#">Main</a>
+                </h1>
+            </div>
+
+            <div id="navigation">
+                <div id="sty" align="right" style="padding-right: 20px;
+                padding-bottom: 1px"><a href="{% url 'Staffapp:exit' %}"
+                                        style="text-decoration: none"><font size="3">退出</font></a>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="content" align="center">
+            <p id="whereami">
+            </p>
+            <h1>
+                add Emp info:
+            </h1>
+            <form action="{% url 'Staffapp:a' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table cellpadding="0" cellspacing="0" border="0"
+                       class="form_table">
+                    <tr>
+                        <td valign="middle" align="right">
+                            姓 &nbsp;&nbsp; 名:
+                        </td>
+                        <td valign="middle" align="left">
+                            <input type="text" class="inputgri" name="name"
+                                   onblur="checkName()" id="name"><span id="spanid"></span><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle" align="right">
+                            薪 &nbsp;&nbsp; 资:
+                        </td>
+                        <td valign="middle" align="left">
+                            <input type="text" class="inputgri" name="salary"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle" align="right">
+                            年 &nbsp;&nbsp; 龄:
+                        </td>
+                        <td valign="middle" align="left">
+                            <input type="text" class="inputgri" name="age"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle" align="right">
+                            出生年月:
+                        </td>
+                        <td valign="middle" align="left">
+                            <input type="date" class="inputgri" name="birthday"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle" align="right">
+                            头 &nbsp;&nbsp; 像:
+                        </td>
+                        <td valign="middle" align="left">
+                            <input type="file" class="inputgri" name="headpic" style="width: 180px"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="15">
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input type="submit" value=" 提交"/>
+                            <button a href="javascript: void(0);" class="button"
+                                    onclick="window.location.href=document.referrer; return false"> 取消
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div id="footer">
+        <div id="footer_bg" align="right">
+            算几番照我
+        </div>
+    </div>
+</div>
+</body>
+</html>

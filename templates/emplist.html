@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>emplist</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+    <script src="/static/js/jquery-3.3.1.min.js'"></script>
+    <style>
+        #sty a:link {
+            color: #000000;
+            text-decoration: underline;
+        }
+
+        #sty a:hover {
+            color: #FF0000;
+            text-decoration: none;
+        }
+
+        #sty a:active {
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .a {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #e1e2e3;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .b {
+            border: 0;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .c {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div id="wrap">
+    <div id="top_content">
+        <div id="header">
+            <div id="rightheader">
+                <p>
+                    2019/07/16
+                    <br/>
+                </p>
+            </div>
+            <div id="topheader">
+                <h1 id="title">
+                    <a href="#">main</a>
+                </h1>
+            </div>
+            <div id="navigation">
+                <div id="sty" align="right" style="padding-right: 20px;
+                padding-bottom: 1px"><a href="{% url 'Staffapp:exit' %}"
+                                        style="text-decoration: none"><font size="3">退出</font></a>
+
+                </div>
+            </div>
+        </div>
+        <div id="content">
+
+            <p id="whereami">
+            </p>
+            <h1>
+                Welcome!
+            </h1>
+
+            <table class="table">
+                <tr class="table_header" align="center">
+                    <td>Id</td>
+                    <td>Headpic</td>
+                    <td>Name</td>
+                    <td>Salary</td>
+                    <td>Age</td>
+                    <td>Birthday</td>
+                    <td>Operating</td>
+                </tr>
+                <tr class="row1" align="center">
+                    {% for emp in page.object_list %}
+                        {% if forloop.counter|divisibleby:2 %}
+                            <tr align="center" style="background-color: lightblue;">
+                                {% else %}
+                            <tr align="center" style="background-color:whitesmoke;">
+                        {% endif %}
+
+                    <td>{{ emp.id }}</td>
+                    <td><img src="/static/{{ emp.Headpic }}" width="60px" height="60"/></td>
+                    <td>{{ emp.Name }}</td>
+                    <td>{{ emp.Salary }}</td>
+                    <td>{{ emp.Age }}</td>
+                    <td>{{ emp.Birthday }}</td>
+                    <td>
+                        <div id="sty"><a href="{% url 'Staffapp:delete' %}?id={{ emp.id }}&page={{ page.number }}"
+                                         style="text-decoration: none">DELETE</a>&nbsp;<a
+                                href="{% url 'Staffapp:updateEmp' %}?id={{ emp.id }}&number={{ page.number }}"
+                                style="text-decoration: none">UPDATE</a>
+                        </div>
+                    </td>
+                    </tr>
+
+                    {% endfor %}
+                <tr>
+                    <td height="20"></td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="7">
+                        {% if page.has_previous %}
+                            <a href="{% url 'Staffapp:emplist' %}?page={{ page.previous_page_number }}">上一页</a>
+                        {% endif %}
+
+                        {% for p in page.paginator.page_range %}
+                            <a href="{% url 'Staffapp:emplist' %}?page={{ p }}">
+                                {% if p == page.number %}
+                                    <span class="a">{{ p }}</span>
+                                {% else %}
+                                    <span class="b">{{ p }}</span>
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+
+                        {% if page.has_next %}
+                            <a href="{% url 'Staffapp:emplist' %}?page={{ page.next_page_number }}">下一页</a>
+                        {% endif %}
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td colspan="7" align="right">
+                        <input type="button" class="button" value="添加员工 &raquo;"
+                               onclick="location='{% url 'Staffapp:addEmp' %}'"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="footer">
+        <div id="footer_bg" align="right">
+            算几番照我
+        </div>
+    </div>
+</div>
+</body>
+</html>

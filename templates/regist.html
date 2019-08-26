@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% load static %}
+<html>
+<head>
+    <title>regist</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+    <script src="/static/ajaxregistapp/jquery-1.11.1.js/"></script>
+    <script src=" /static/js/jquery-3.3.1.min.js "></script>
+
+    <script>
+        function regist() {
+            $.ajax({
+                type: "post",
+                url: "{% url 'emsapp:regist_r' %}",
+                data: $("#from2").serialize(),
+                success: function (data) {
+                    if (data === "ok") {
+                        location.href = "{% url 'emsapp:login' %}"
+                    } else if (data === "error") {
+                        alert("注册失败")
+                    }
+                }
+            })
+        }
+
+        {#function checkCaptcha() {#}
+        {#    var code = $("#captcha").val()#}
+        {#    $.ajax({#}
+        {#        type: "post",#}
+        {#        url: "{% url 'emsapp:checkcaptcha' %}",#}
+        {#        data: "code=" + code + "&csrfmiddlewaretoken={{ csrf_token }}",#}
+        {#        success:function (data) {#}
+        {#            if (data ==="ok"){#}
+        {#                $("#msg2")#}
+        {#            }else{#}
+        {##}
+        {#            }#}
+        {#        }#}
+        {#    })#}
+    </script>
+    <script>
+        function checkName() {
+            uname = $("#input_name").val();
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest()
+            } else if (window.ActiveXObject) {
+                xhr = new ActiveXObject()
+            }
+            url = "{% url 'emsapp:checkName' %}?name=" + uname;
+            xhr.open("get", url, true);
+            xhr.send();
+            src = "{% static 'ajaxregistapp/images/5-121204193R5-50.gif' %}";
+            $("#image").attr("src", src);
+
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log(xhr.responseText);
+                    res = xhr.responseText;
+                    var src = "";
+                    if (res == "ok") {
+                        src = "{% static 'ajaxregistapp/images/right_3.jpg' %}"
+                    } else if (res == "error") {
+                        src = "{% static 'ajaxregistapp/images/error_3.jpg' %}"
+                    }
+                    $("#image").attr("src", src);
+
+                }
+            }
+
+
+        }
+
+        function checkCaptcha() {
+            captcha = $("#captcha").val();
+
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest()
+            } else if (window.ActiveXObject) {
+                xhr = new ActiveXObject()
+            }
+            url = "{% url 'emsapp:checkcaptcha' %}?captcha=" + captcha;
+            xhr.open("get", url, true);
+            xhr.send();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    console.log(xhr.responseText);
+                    document.getElementById("msg2").innerHTML = xhr.responseText
+                }
+            }
+        }
+
+    </script>
+</head>
+<body>
+<div id="wrap">
+    <div id="top_content">
+        <div id="header">
+            <div id="rightheader">
+                <p>
+                    2019/07/16
+                    <br/>
+                </p>
+            </div>
+            <div id="topheader">
+                <h1 id="title">
+                    <a href="#">main</a>
+                </h1>
+            </div>
+            <div id="navigation">
+            </div>
+        </div>
+        <div id="content" align="center">
+            <p id="whereami">
+            </p>
+            <h1>
+                注册
+            </h1>
+            <form action="" method="post" id="from2" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table cellpadding="0" cellspacing="0" border="0"
+                       class="form_table">
+                    <tr>
+                        <td valign="middle" align="right">
+                            用户名:
+                        </td>
+                        <td valign="middle" align="left">
+                            <input type="text" class="inputgri" name="username" onblur="checkName()"
+                                   id="input_name"><img src="" id="image"
+                                                        width="20px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle" align="right">
+                            真实姓名:
+                        </td>
+                        <td valign="middle" align="left">
+                            <input type="text" class="inputgri" name="name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle" align="right">
+                            密&nbsp;&nbsp;码:
+                        </td>
+                        <td valign="middle" align="left">
+                            <input type="password" class="inputgri" name="pwd"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle" align="right">
+                            性&nbsp;&nbsp;别:
+                        </td>
+                        <td valign="middle" align="left">
+                            男
+                            <input type="radio" class="inputgri" name="sex" value="m" checked="checked"/>
+                            女
+                            <input type="radio" class="inputgri" name="sex" value="f"/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="middle" align="right">
+                            验证码:
+                        </td>
+                        <td valign="middle" align="left">
+                            <input type="text" class="inputgri" name="number" id="captcha" onblur="checkCaptcha()"
+                                   style="width: 50px"/>
+                            <img id="num" src="{% url 'emsapp:getcapthca' %}" width="80px"/>
+                            <a href="javascript:void(0);"
+                               onclick="document.getElementById('num').src = '{% url 'emsapp:getcapthca' %}?'+(new Date()).getTime()">看不清，换一张</a><br><span
+                                id="msg2" style="color: red"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle" align="center" colspan="2">
+                            <input type="button" class="button" value="&laquo; 返回"
+                                   onclick="location='{% url 'emsapp:login' %}'"/>
+                            <input type="button" class="button" value="注册 &raquo;" onclick="regist()"/>
+                        </td>
+
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div id="footer">
+        <div id="footer_bg" align="right">
+            算几番照我
+        </div>
+    </div>
+</div>
+</body>
+</html>
